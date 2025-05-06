@@ -25,10 +25,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
@@ -46,10 +44,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
@@ -67,10 +63,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
@@ -87,10 +81,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
@@ -107,10 +99,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
@@ -127,10 +117,8 @@ public class RegisterTest {
                 .body(registerData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("/register")
-
                 .then()
                 .log().status()
                 .log().body()
