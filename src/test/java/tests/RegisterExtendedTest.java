@@ -6,6 +6,7 @@ import models.lombok.RegisterBodyModel;
 import models.lombok.RegisterResponseModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,9 +23,7 @@ public class RegisterExtendedTest {
     @Test
     void successfulRegisterTest() {
 
-        RegisterBodyModel registerData = new RegisterBodyModel();
-        registerData.setEmail("eve.holt@reqres.in");
-        registerData.setPassword("pistol");
+        RegisterBodyModel registerData = new RegisterBodyModel("eve.holt@reqres.in", "pistol");
 
         RegisterResponseModel response = step("Successful registration", () -> {
             return given(registerRequestSpec)
@@ -32,7 +31,7 @@ public class RegisterExtendedTest {
                     .when()
                     .post("/register")
                     .then()
-                    .spec(successfulRegisterResponse)
+                    .spec(registerResponseSpec(200))
                     .extract().as(RegisterResponseModel.class);
         });
         step("Check registration", () -> {
@@ -43,9 +42,7 @@ public class RegisterExtendedTest {
 
     @Test
     void unsuccessfulRegisterTest() {
-        RegisterBodyModel registerData = new RegisterBodyModel();
-        registerData.setEmail("");
-        registerData.setPassword("");
+        RegisterBodyModel registerData = new RegisterBodyModel("", "");
 
         RegisterErrorModel response = step("Unsuccessful registration", () ->
                 given(registerRequestSpec)
@@ -53,7 +50,7 @@ public class RegisterExtendedTest {
                         .when()
                         .post("/register")
                         .then()
-                        .spec(unsuccessfulRegisterResponse)
+                        .spec(registerResponseSpec(400))
                         .extract().as(RegisterErrorModel.class));
         step("Check unsuccessful registration", () ->
                 assertEquals("Missing email or username", response.getError()));
@@ -61,9 +58,7 @@ public class RegisterExtendedTest {
 
     @Test
     void missingPasswordRegisterTest() {
-        RegisterBodyModel registerData = new RegisterBodyModel();
-        registerData.setEmail("eve.holt@reqres.in");
-        registerData.setPassword("");
+        RegisterBodyModel registerData = new RegisterBodyModel("eve.holt@reqres.in", "");
 
         RegisterErrorModel response = step("Missing password", () ->
                 given(registerRequestSpec)
@@ -71,7 +66,7 @@ public class RegisterExtendedTest {
                         .when()
                         .post("/register")
                         .then()
-                        .spec(unsuccessfulRegisterResponse)
+                        .spec(registerResponseSpec(400))
                         .extract().as(RegisterErrorModel.class));
         step("Check missing password", () ->
                 assertEquals("Missing password", response.getError()));
@@ -79,9 +74,7 @@ public class RegisterExtendedTest {
 
     @Test
     void missingEmailRegisterTest() {
-        RegisterBodyModel registerData = new RegisterBodyModel();
-        registerData.setEmail("");
-        registerData.setPassword("pistol");
+        RegisterBodyModel registerData = new RegisterBodyModel("", "pistol");
 
         RegisterErrorModel response = step("Missing email", () ->
                 given(registerRequestSpec)
@@ -89,7 +82,7 @@ public class RegisterExtendedTest {
                         .when()
                         .post("/register")
                         .then()
-                        .spec(unsuccessfulRegisterResponse)
+                        .spec(registerResponseSpec(400))
                         .extract().as(RegisterErrorModel.class));
         step("Check missing email", () ->
                 assertEquals("Missing email or username", response.getError()));
@@ -97,9 +90,7 @@ public class RegisterExtendedTest {
 
     @Test
     void wrongEmailRegisterTest() {
-        RegisterBodyModel registerData = new RegisterBodyModel();
-        registerData.setEmail("holt55@reqres.in");
-        registerData.setPassword("pistol");
+        RegisterBodyModel registerData = new RegisterBodyModel("holt55@reqres.in", "pistol");
 
         RegisterErrorModel response = step("Wrong email", () ->
                 given(registerRequestSpec)
@@ -107,7 +98,7 @@ public class RegisterExtendedTest {
                         .when()
                         .post("/register")
                         .then()
-                        .spec(unsuccessfulRegisterResponse)
+                        .spec(registerResponseSpec(400))
                         .extract().as(RegisterErrorModel.class));
         step("Check wrong email", () ->
                 assertEquals("Note: Only defined users succeed registration", response.getError()));

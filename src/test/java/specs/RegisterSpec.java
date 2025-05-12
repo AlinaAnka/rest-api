@@ -1,6 +1,4 @@
 package specs;
-
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -14,21 +12,17 @@ import static io.restassured.http.ContentType.JSON;
 public class RegisterSpec {
 
     public static RequestSpecification registerRequestSpec = with()
-
             .filter(withCustomTemplates())
             .header("x-api-key", "reqres-free-v1")
             .contentType(JSON)
             .log().all();
 
-    public static ResponseSpecification successfulRegisterResponse = new ResponseSpecBuilder()
-            .expectStatusCode(200)
-            .log(STATUS)
-            .log(BODY)
-            .build();
-
-    public static ResponseSpecification unsuccessfulRegisterResponse = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(STATUS)
-            .log(BODY)
-            .build();
+    public static ResponseSpecification registerResponseSpec (int statusCode) {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(statusCode)
+                .log(STATUS)
+                .log(BODY)
+                .build();
+    }
 }
+
